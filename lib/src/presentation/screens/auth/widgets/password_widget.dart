@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class PasswordTextField extends StatelessWidget {
+class PasswordWidget extends StatelessWidget {
   final TextEditingController controller;
 
-  const PasswordTextField({super.key, required this.controller});
+  const PasswordWidget({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

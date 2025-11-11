@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class EmailTextField extends StatelessWidget {
+class EmailWidget extends StatelessWidget {
   final TextEditingController controller;
 
-  const EmailTextField({super.key, required this.controller});
+  const EmailWidget({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {

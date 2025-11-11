@@ -12,7 +12,7 @@ class LoginScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // Register AuthController (no logic inside)
+
     final authController = Get.put(AuthController());
 
     final emailController = TextEditingController();
@@ -73,11 +73,11 @@ class LoginScreen extends StatelessWidget {
                       const SizedBox(height: 20),
 
                       // Email input
-                      EmailTextField(controller: emailController),
+                      EmailWidget(controller: emailController),
                       const SizedBox(height: 20),
 
                       // Password input
-                      PasswordTextField(controller: passwordController),
+                      PasswordWidget(controller: passwordController),
                       const SizedBox(height: 10),
 
                       // ✅ Remember Me + Forgot Password
@@ -112,14 +112,7 @@ class LoginScreen extends StatelessWidget {
                             ],
                           ),
                           GestureDetector(
-                            onTap: () {
-                              Get.snackbar(
-                                'Info',
-                                'Password reset feature coming soon!',
-                                backgroundColor: Colors.blue.withOpacity(0.7),
-                                colorText: Colors.white,
-                              );
-                            },
+
                             child: Text(
                               'Forgot Password?',
                               style: GoogleFonts.inter(
@@ -133,7 +126,6 @@ class LoginScreen extends StatelessWidget {
 
                       const SizedBox(height: 35),
 
-                      // ✅ Login button (no GetX logic)
                       LoginButton(),
 
                       const SizedBox(height: 20),
