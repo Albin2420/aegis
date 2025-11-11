@@ -11,7 +11,6 @@ class NavigationController extends GetxController {
       log("‼️ Error in goTo():$e");
     }
   }
-
   void func(){}
 }
 
