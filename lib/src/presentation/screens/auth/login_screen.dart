@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:aegis/src/presentation/screens/auth/widgets/email_widget.dart';
 import 'package:aegis/src/presentation/screens/auth/widgets/login_widget.dart';
 import 'package:aegis/src/presentation/screens/auth/widgets/password_widget.dart';
@@ -126,7 +128,9 @@ class LoginScreen extends StatelessWidget {
 
                       const SizedBox(height: 35),
 
-                      LoginButton(),
+                      LoginButton(onTap: () {
+                        log("Login button tapped!");
+                      },),
 
                       const SizedBox(height: 20),
                     ],
