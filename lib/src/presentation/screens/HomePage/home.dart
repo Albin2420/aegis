@@ -60,7 +60,7 @@ class Home extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 15),
+                const SizedBox(height: 18),
 
                 /// 🧾 Assigned Tasks Title
                 const Text(
@@ -73,7 +73,7 @@ class Home extends StatelessWidget {
                   ),
                 ),
 
-                const SizedBox(height: 5),
+                const SizedBox(height: 10),
 
                 // Normal (blue)
                 AssignedTaskWidget(isBlue: true, showRework: false),
