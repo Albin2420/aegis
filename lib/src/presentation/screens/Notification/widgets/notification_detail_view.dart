@@ -1,24 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../notification_page.dart';
 
-class NotificationDetailView extends StatelessWidget {
-  final PersonNotificationData personData;
-  final VoidCallback onBack;
-
-  const NotificationDetailView({
-    super.key,
-    required this.personData,
-    required this.onBack,
-  });
+class NotificationDetailPage extends StatelessWidget {
+  const NotificationDetailPage({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final reversedMessages = personData.messages.reversed.toList();
     return Scaffold(
       backgroundColor: const Color(0xFFFEFDFE),
       body: Column(
         children: [
+          // 🔙 Back button
           SafeArea(
             bottom: false,
             child: Container(
@@ -27,7 +19,7 @@ class NotificationDetailView extends StatelessWidget {
               child: Row(
                 children: [
                   GestureDetector(
-                    onTap: onBack,
+                    onTap: () => Navigator.pop(context),
                     child: Container(
                       padding: const EdgeInsets.all(10),
                       decoration: const BoxDecoration(
@@ -48,6 +40,8 @@ class NotificationDetailView extends StatelessWidget {
               ),
             ),
           ),
+
+          // 📄 Content
           Expanded(
             child: SingleChildScrollView(
               padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -65,24 +59,26 @@ class NotificationDetailView extends StatelessWidget {
                     ),
                   ),
                   const SizedBox(height: 20),
+
+                  // 👤 User info
                   Row(
                     children: [
-                      CircleAvatar(
-                        radius: 30,
-                        backgroundColor: personData.avatarBackgroundColor,
-                        child: ClipOval(
-                          child: Image.asset(
-                            personData.avatarImagePath,
+                      Container(
+                        width: 48,
+                        height: 48,
+                        decoration: const BoxDecoration(
+                          shape: BoxShape.circle,
+                          image: DecorationImage(
+                            image:
+                            AssetImage('assets/images/sreelakshmi.png'),
                             fit: BoxFit.cover,
-                            width: 60,
-                            height: 60,
                           ),
                         ),
                       ),
                       const SizedBox(width: 15),
-                      Text(
-                        personData.name.toUpperCase(),
-                        style: const TextStyle(
+                      const Text(
+                        "USER",
+                        style: TextStyle(
                           fontFamily: 'Wilker',
                           fontSize: 20,
                           fontWeight: FontWeight.w900,
@@ -92,46 +88,33 @@ class NotificationDetailView extends StatelessWidget {
                     ],
                   ),
                   const SizedBox(height: 30),
-                  ...reversedMessages.map((msg) => Padding(
-                    padding: const EdgeInsets.only(bottom: 15),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          msg.date,
-                          style: GoogleFonts.inter(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: Colors.black87,
-                          ),
-                        ),
-                        const SizedBox(height: 8),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.all(16),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFFFFD86D),
-                            borderRadius: BorderRadius.circular(2),
-                            border: const Border(
-                              top: BorderSide(color: Colors.black, width: 2),
-                              left: BorderSide(color: Colors.black, width: 2),
-                              right: BorderSide(color: Colors.black, width: 4),
-                              bottom: BorderSide(color: Colors.black, width: 4),
-                            ),
-                          ),
-                          child: Text(
-                            msg.message,
-                            style: GoogleFonts.poppins(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w500,
-                              color: Colors.black,
-                              height: 1.4,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  )),
+
+                  // 🔔 Notifications list
+                  Column(
+                    children: [
+                      // Notification 1
+                      _notificationItem(
+                        time: "10:00 AM",
+                        text:
+                        "Profile page accepted by admin. You can start working on the next task that has been added to your assigned tasks.",
+                      ),
+                      const SizedBox(height: 15),
+
+                      // Notification 2
+                      _notificationItem(
+                        time: "Yesterday",
+                        text: "Homepage under checking.",
+                      ),
+                      const SizedBox(height: 15),
+
+                      // Notification 3
+                      _notificationItem(
+                        time: "Oct 10",
+                        text:
+                        "Profile page accepted by admin. You can start working on the next task.",
+                      ),
+                    ],
+                  ),
                   const SizedBox(height: 20),
                 ],
               ),
@@ -139,6 +122,47 @@ class NotificationDetailView extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  /// ✅ Reusable Notification Container Widget
+  Widget _notificationItem({required String time, required String text}) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          time,
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w600,
+            color: Colors.black87,
+          ),
+        ),
+        const SizedBox(height: 8),
+        Container(
+          width: double.infinity,
+          padding: const EdgeInsets.all(16),
+          decoration: BoxDecoration(
+            color: const Color(0xFFFFD86D),
+            borderRadius: BorderRadius.circular(5),
+            border: const Border(
+              top: BorderSide(color: Colors.black, width: 2),
+              left: BorderSide(color: Colors.black, width: 2),
+              right: BorderSide(color: Colors.black, width: 4), // ✅ bold right border
+              bottom: BorderSide(color: Colors.black, width: 4), // ✅ bold bottom border
+            ),
+          ),
+          child: Text(
+            text,
+            style: GoogleFonts.poppins(
+              fontSize: 14,
+              fontWeight: FontWeight.w500,
+              color: Colors.black,
+              height: 1.4,
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
