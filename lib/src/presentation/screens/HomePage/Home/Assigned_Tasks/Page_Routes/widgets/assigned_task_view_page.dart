@@ -2,6 +2,9 @@ import 'package:aegis/src/presentation/screens/HomePage/Home/Assigned_Tasks/Page
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../../../../controller/assignedtask/assigned_task_view_controller.dart';
+import '../task_starting_page.dart';
+import 'rework_timer_widget.dart';
 import '../../../../home_screen.dart';
 
 class AssignedTaskViewPage extends StatelessWidget {
@@ -24,6 +27,13 @@ class AssignedTaskViewPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final String tag = 'assigned_view_$taskId';
+    Get.lazyPut<AssignedTaskViewController>(
+          () => AssignedTaskViewController(),
+      tag: tag,
+    );
+    final AssignedTaskViewController controller = Get.find<AssignedTaskViewController>(tag: tag);
+
     return Scaffold(
       backgroundColor: const Color(0XFFFEFDFE),
       appBar: AppBar(
@@ -61,17 +71,13 @@ class AssignedTaskViewPage extends StatelessWidget {
                   fontFamily: 'Wilker',
                   fontSize: 24,
                   fontWeight: FontWeight.w800,
-                  color: isRework
-                      ? const Color(0xFFB01919)
-                      : const Color(0xFF2632C2),
+                  color: isRework ? const Color(0xFFB01919) : const Color(0xFF2632C2),
                 ),
               ),
               const SizedBox(height: 8),
-
               if (isRework)
                 Container(
-                  padding:
-                  const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                   decoration: const BoxDecoration(
                     border: Border(
                       top: BorderSide(color: Color(0XFFFF0000), width: 2),
@@ -92,7 +98,12 @@ class AssignedTaskViewPage extends StatelessWidget {
                   ),
                 ),
               const SizedBox(height: 20),
-
+              Obx(() {
+                return controller.showTimer.value
+                    ? const ReworkTimerWidget(taskId: '001', title: 'Logo Design', description: 'Create a user friendly logo design for the employee app called Aevora...', assignedby: 'Adharsh', deadline: '12/12/25',isRework: true,)
+                    : const SizedBox.shrink();
+              }),
+              const SizedBox(height: 20),
               Text(
                 description,
                 style: GoogleFonts.inter(
@@ -103,7 +114,6 @@ class AssignedTaskViewPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 20),
-
               Container(
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(vertical: 25),
@@ -118,8 +128,7 @@ class AssignedTaskViewPage extends StatelessWidget {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: const [
-                    Icon(Icons.description,
-                        size: 40, color: Color(0xFFFF5900)),
+                    Icon(Icons.description, size: 40, color: Color(0xFFFF5900)),
                     SizedBox(height: 8),
                     Text(
                       "DOCUMENTATION",
@@ -134,12 +143,9 @@ class AssignedTaskViewPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15),
-
-              // Assigned by section
               Container(
                 width: double.infinity,
-                padding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                 decoration: const BoxDecoration(
                   border: Border(
                     top: BorderSide(color: Colors.black, width: 2),
@@ -150,12 +156,11 @@ class AssignedTaskViewPage extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.person_2_outlined,
-                        size: 20, color: Colors.black),
+                    const Icon(Icons.person_2_outlined, size: 20, color: Colors.black),
                     const SizedBox(width: 8),
-                    Text(
+                    const Text(
                       'Assigned By - ',
-                      style: GoogleFonts.inter(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
                         color: Colors.black,
@@ -178,12 +183,9 @@ class AssignedTaskViewPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 15),
-
-              // Deadline section
               Container(
                 width: double.infinity,
-                padding:
-                const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
+                padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 10),
                 decoration: BoxDecoration(
                   color: const Color(0xFFFFD9D9),
                   border: const Border(
@@ -196,8 +198,7 @@ class AssignedTaskViewPage extends StatelessWidget {
                 ),
                 child: Row(
                   children: [
-                    const Icon(Icons.access_time,
-                        size: 20, color: Color(0xFF971C1A)),
+                    const Icon(Icons.access_time, size: 20, color: Color(0xFF971C1A)),
                     const SizedBox(width: 10),
                     Text(
                       'Deadline - ',
@@ -223,7 +224,23 @@ class AssignedTaskViewPage extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 25),
-              StartTaskButton()
+              GestureDetector(
+                onTap: () {
+                  Get.to(() => TaskStartPage(
+                    taskId: taskId,
+                    title: title,
+                    description: description,
+                    assignedby: assignedby,
+                    deadline: deadline,
+                    isRework: isRework,
+                  ))?.then((result) {
+                    if (result == true) {
+                      controller.enableTimer();
+                    }
+                  });
+                },
+                child: const StartTaskButton(),
+              ),
             ],
           ),
         ),
@@ -231,8 +248,3 @@ class AssignedTaskViewPage extends StatelessWidget {
     );
   }
 }
-
-// if (showRework) ...[
-// const SizedBox(height: 16),
-// const ReworkTimerWidget(),
-// ],

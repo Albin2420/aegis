@@ -1,9 +1,25 @@
-import 'package:aegis/src/presentation/screens/HomePage/Home/Assigned_Tasks/Page_Routes/widgets/assigned_task_view_page.dart';
+import 'package:aegis/src/presentation/screens/HomePage/Home/Assigned_Tasks/Page_Routes/task_submission_page.dart';
+import 'package:aegis/src/presentation/screens/HomePage/Home/Assigned_Tasks/Page_Routes/widgets/end_task_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
 class TaskStartPage extends StatelessWidget {
-  const TaskStartPage({super.key});
+  final String taskId;
+  final String title;
+  final String description;
+  final String assignedby;
+  final String deadline;
+  final bool isRework;
+
+  const TaskStartPage({
+    super.key,
+    required this.taskId,
+    required this.title,
+    required this.description,
+    required this.assignedby,
+    required this.deadline,
+    required this.isRework,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -15,19 +31,11 @@ class TaskStartPage extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              /// 🔙 Back Button
               Align(
                 alignment: Alignment.topLeft,
                 child: ElevatedButton(
                   onPressed: () {
-                    Get.off(() => AssignedTaskViewPage(
-                      taskId: '001',
-                      title: 'Logo Design',
-                      description: "Create the homepage UI with responsive layout for mobile and desktop view",
-                      assignedby: 'Adharsh',
-                      deadline: '12/12/25',
-                      isRework: true,
-                    ));
+                    Get.back(result: true);
                   },
                   style: ElevatedButton.styleFrom(
                     shape: const CircleBorder(),
@@ -39,10 +47,7 @@ class TaskStartPage extends StatelessWidget {
                   child: const Icon(Icons.arrow_back, color: Colors.black),
                 ),
               ),
-
               const SizedBox(height: 40),
-
-              /// 🧠 Title
               const Text(
                 "YOUR TASK WILL START IN",
                 textAlign: TextAlign.center,
@@ -53,10 +58,7 @@ class TaskStartPage extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-
               const SizedBox(height: 5),
-
-              /// 🕓 Hardcoded GO! Text
               const Text(
                 "3",
                 style: TextStyle(
@@ -66,8 +68,6 @@ class TaskStartPage extends StatelessWidget {
                   color: Colors.black,
                 ),
               ),
-
-              /// 💡 Bulb Image
               Container(
                 width: 80,
                 height: 80,
@@ -79,10 +79,7 @@ class TaskStartPage extends StatelessWidget {
                   ),
                 ),
               ),
-
               const SizedBox(height: 5),
-
-              /// ⏱ Timer Box (Static)
               Stack(
                 clipBehavior: Clip.none,
                 children: [
@@ -110,8 +107,6 @@ class TaskStartPage extends StatelessWidget {
                       ),
                     ),
                   ),
-
-                  /// ✨ Twinkle icon
                   Positioned(
                     top: -36,
                     left: 20,
@@ -128,35 +123,24 @@ class TaskStartPage extends StatelessWidget {
                   ),
                 ],
               ),
-
               const SizedBox(height: 50),
-
-              /// ✅ End Task Button
-              // GestureDetector(
-              //   onTap: () {
-              //     Get.to(() => const TaskSubmissionPage());
-              //   },
-              //   child: Container(
-              //     width: double.infinity,
-              //     padding: const EdgeInsets.symmetric(vertical: 16),
-              //     decoration: BoxDecoration(
-              //       color: Colors.black,
-              //       borderRadius: BorderRadius.circular(6),
-              //     ),
-              //     child: const Center(
-              //       child: Text(
-              //         "END TASK",
-              //         style: TextStyle(
-              //           fontFamily: 'Wilker',
-              //           fontWeight: FontWeight.w900,
-              //           fontSize: 16,
-              //           color: Colors.white,
-              //           letterSpacing: 1,
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              EndTaskWidget(
+                onPressed: () {
+                  Get.to(() => TaskSubmissionPage(
+                    taskId: taskId,
+                    title: title,
+                    description: description,
+                    assignedby: assignedby,
+                    deadline: deadline,
+                    isRework: isRework,
+                    elapsedTime: '05:10:32',
+                  ))?.then((result) {
+                    if (result == true) {
+                      Get.back(result: true);
+                    }
+                  });
+                },
+              ),
             ],
           ),
         ),
