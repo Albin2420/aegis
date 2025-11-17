@@ -1,27 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../../controller/completedtask/completed_task_controller.dart';
 
-class CompletedTaskWidget extends StatefulWidget {
+class CompletedTaskWidget extends StatelessWidget {
+  final int index;
   final String title;
   final String description;
   final String? completedTime;
-  final int index;
 
   const CompletedTaskWidget({
     super.key,
+    required this.index,
     required this.title,
     required this.description,
     this.completedTime,
-    required this.index,
   });
 
-  @override
-  State<CompletedTaskWidget> createState() => _CompletedTaskWidgetState();
-}
-
-class _CompletedTaskWidgetState extends State<CompletedTaskWidget> {
-  bool isExpanded = false;
-
+  // 🎨 Colors
   static const List<Color> backgroundColors = [
     Color(0XFFFFC2C3),
     Color(0XFFB2DFFF),
@@ -42,27 +38,33 @@ class _CompletedTaskWidgetState extends State<CompletedTaskWidget> {
     Color(0XFF44F03E),
   ];
 
-  Color get backgroundColor =>
-      backgroundColors[widget.index % backgroundColors.length];
-  Color get titleColor => titleColors[widget.index % titleColors.length];
+  Color getBackgroundColorForIndex(int index) =>
+      backgroundColors[index % backgroundColors.length];
+  Color getTitleColorForIndex(int index) =>
+      titleColors[index % titleColors.length];
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => setState(() => isExpanded = !isExpanded),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
-        decoration: BoxDecoration(
-          color: backgroundColor,
-          borderRadius: BorderRadius.circular(5),
-          border: const Border(
-            top: BorderSide(color: Colors.black, width: 2),
-            left: BorderSide(color: Colors.black, width: 2),
-            right: BorderSide(color: Colors.black, width: 4),
-            bottom: BorderSide(color: Colors.black, width: 4),
+    final controller = Get.put(CompletedTaskController());
+
+    return Obx(() {
+      final isExpanded = controller.isExpanded(index);
+
+      return GestureDetector(
+        onTap: () => controller.toggleExpansion(index),
+        child: AnimatedContainer(
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeInOut,
+          decoration: BoxDecoration(
+            color: getBackgroundColorForIndex(index),
+            borderRadius: BorderRadius.circular(5),
+            border: const Border(
+              top: BorderSide(color: Colors.black, width: 2),
+              left: BorderSide(color: Colors.black, width: 2),
+              right: BorderSide(color: Colors.black, width: 4),
+              bottom: BorderSide(color: Colors.black, width: 4),
+            ),
           ),
-        ),
-        child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -73,20 +75,20 @@ class _CompletedTaskWidgetState extends State<CompletedTaskWidget> {
                 children: [
                   Expanded(
                     child: Text(
-                      widget.title,
+                      title,
                       style: TextStyle(
                         fontFamily: 'Wilker',
                         fontSize: 16,
                         fontWeight: FontWeight.w900,
-                        color: titleColor,
+                        color: getTitleColorForIndex(index),
                       ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
                   ),
                   AnimatedRotation(
-                    duration: const Duration(milliseconds: 300),
                     turns: isExpanded ? 0.5 : 0,
+                    duration: const Duration(milliseconds: 300),
                     child: const Icon(
                       Icons.keyboard_arrow_down,
                       color: Colors.black,
@@ -97,21 +99,28 @@ class _CompletedTaskWidgetState extends State<CompletedTaskWidget> {
               ),
               const SizedBox(height: 8),
 
-              // 🔹 Description
-              Text(
-                widget.description,
-                style: GoogleFonts.inter(
-                  fontSize: 14,
-                  color: Colors.black,
-                  height: 1.3,
+              // 🔹 Description (expands smoothly)
+              AnimatedSize(
+                duration: const Duration(milliseconds: 300),
+                curve: Curves.easeInOut,
+                child: ConstrainedBox(
+                  constraints: isExpanded
+                      ? const BoxConstraints()
+                      : const BoxConstraints(maxHeight: 40),
+                  child: Text(
+                    description,
+                    style: GoogleFonts.inter(
+                      fontSize: 14,
+                      color: Colors.black,
+                      height: 1.3,
+                    ),
+                    overflow: TextOverflow.fade,
+                  ),
                 ),
-                maxLines: isExpanded ? null : 2,
-                overflow:
-                isExpanded ? TextOverflow.visible : TextOverflow.ellipsis,
               ),
 
-              // 🔹 Completed Time
-              if (isExpanded && widget.completedTime != null) ...[
+              // 🔹 Completed Time (only visible when expanded)
+              if (isExpanded && completedTime != null) ...[
                 const SizedBox(height: 16),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -124,7 +133,7 @@ class _CompletedTaskWidgetState extends State<CompletedTaskWidget> {
                     ),
                     const SizedBox(width: 6),
                     Text(
-                      widget.completedTime!,
+                      completedTime!,
                       style: const TextStyle(
                         fontFamily: 'Wilker',
                         fontSize: 19,
@@ -138,7 +147,7 @@ class _CompletedTaskWidgetState extends State<CompletedTaskWidget> {
             ],
           ),
         ),
-      ),
-    );
+      );
+    });
   }
 }
