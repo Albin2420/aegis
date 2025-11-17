@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../controller/navigation/nav_controller.dart';
+import '../CompletedTask/completed_task_page.dart';
 import 'home.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -42,7 +43,7 @@ class HomeScreen extends StatelessWidget {
             index: navController.selectedIndex.value,
             children: const [
               Home(),
-              // CompletedTask(),
+              CompletedTask(),
               // NotificationPage(),
               // ProfilePage(),
             ],

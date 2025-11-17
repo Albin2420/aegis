@@ -1,4 +1,5 @@
 import 'package:aegis/src/presentation/screens/HomePage/Home/Assigned_Tasks/assigned_task_widget.dart';
+import 'package:aegis/src/presentation/screens/HomePage/Home/Submitted_Tasks/submittedtask_widget.dart';
 import 'package:flutter/material.dart';
 
 class Home extends StatelessWidget {
@@ -59,7 +60,6 @@ class Home extends StatelessWidget {
                     ),
                   ],
                 ),
-
                 const SizedBox(height: 18),
 
                 /// 🧾 Assigned Tasks Title
@@ -72,17 +72,17 @@ class Home extends StatelessWidget {
                     fontWeight: FontWeight.w700,
                   ),
                 ),
-
                 const SizedBox(height: 10),
 
                 // Normal (blue)
                 AssignedTaskWidget(isBlue: true, showRework: false),
                 const SizedBox(height: 15),
+
                 // Rework (red-brown title + tag)
                 AssignedTaskWidget(isBlue: false, showRework: true),
-
                 const SizedBox(height: 15),
-                /// 📦 Submitted Tasks Title (Placeholder)
+
+                /// 📦 Submitted Tasks Title
                 const Text(
                   "SUBMITTED TASKS",
                   style: TextStyle(
@@ -94,6 +94,21 @@ class Home extends StatelessWidget {
                 ),
                 const SizedBox(height: 15),
 
+                /// 🧩 Grid layout for submitted tasks (auto-wraps)
+                GridView.builder(
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                    crossAxisCount: 2, // Two per row
+                    crossAxisSpacing: 12,
+                    mainAxisSpacing: 12,
+                    childAspectRatio: 1, // square-like
+                  ),
+                  itemCount: 6, // total items
+                  itemBuilder: (context, index) {
+                    return SubmittedTasksWidget(index: index);
+                  },
+                ),
               ],
             ),
           ),
