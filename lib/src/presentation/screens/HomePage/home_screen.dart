@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import '../../controller/navigation/nav_controller.dart';
 import '../CompletedTask/completed_task_page.dart';
 import '../Notification/notification_page.dart';
+import '../ProfilePage/profile_page.dart';
 import 'home.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -42,11 +43,11 @@ class HomeScreen extends StatelessWidget {
         child: Obx(() {
           return IndexedStack(
             index: navController.selectedIndex.value,
-            children: const [
+            children:  [
               Home(),
               CompletedTask(),
               NotificationPage(),
-              // ProfilePage(),
+              ProfilePage(),
             ],
           );
         }),
