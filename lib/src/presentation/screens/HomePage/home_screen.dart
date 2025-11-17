@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import '../../controller/navigation/nav_controller.dart';
 import '../CompletedTask/completed_task_page.dart';
+import '../Notification/notification_page.dart';
 import 'home.dart';
 
 class HomeScreen extends StatelessWidget {
@@ -44,7 +45,7 @@ class HomeScreen extends StatelessWidget {
             children: const [
               Home(),
               CompletedTask(),
-              // NotificationPage(),
+              NotificationPage(),
               // ProfilePage(),
             ],
           );
